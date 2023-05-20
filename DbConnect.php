@@ -2,10 +2,10 @@
 class DbConnect
 {
     private $server = 'localhost';
-    private $port = '3307';
+    private $port = '33306';
     private $dbname = 'plumbum';
     private $user = 'emanuel';
-    private $pass = '';
+    private $pass = 'eassf.6912';
 
     public function connect()
     {
