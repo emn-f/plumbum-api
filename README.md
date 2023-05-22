@@ -5,7 +5,7 @@
 
 2. Após a instalação, abra a aplicação e se certifique que o servidor está em execução. Se o programa for fechado, provavelmente o servidor será interrompido.<br>
 
-![Arquivos para deploy do Plumbum](imgsReadme\mampHome.png)
+![Arquivos para deploy do Plumbum](imgsReadme/mampHome.png)
 
 O MAMP possui servidor do Apache e do MySQL, mas utilizaremos apenas o do Apache.
 
