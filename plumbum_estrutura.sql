@@ -2,11 +2,45 @@
 -- Character set: utf8mb4
 -- Collation: utf8mb4_general_ci
 
+DROP DATABASE plumbum;
+
 CREATE DATABASE plumbum;
 USE plumbum;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+-- ----------------------------
+-- Table structure for usuarios
+-- ----------------------------
+DROP TABLE IF EXISTS `usuarios`;
+
+CREATE TABLE `usuarios`  (
+  `id_user` int NOT NULL AUTO_INCREMENT,
+  `user_dtcadastro` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `user_nome` varchar(255),
+  `user_email` varchar(255),
+  `user_senha` varchar(255),
+  `user_tipo` char(1) COMMENT 'A - Administrador, E - Estudante, P - Professor',
+  PRIMARY KEY (`id_user`) USING BTREE,
+  UNIQUE INDEX `id_user_UNIQUE`(`id_user`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 ;
+
+-- ----------------------------
+-- Table structure for turmas
+-- ----------------------------
+DROP TABLE IF EXISTS `turmas`;
+
+CREATE TABLE `turmas`  (
+  `id_turma` int NOT NULL AUTO_INCREMENT,
+  `turma_data_cadastro` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `turma_ano_letivo` int NOT NULL,
+  `turma_ensino` char(1) COMMENT 'F - Fundamental, M - Médio, T - Técnico, S - Superior',
+  `turma_ano` int NULL DEFAULT NULL COMMENT '7º ano, 8º ano. . . (informar apenas o ano)',
+  `turma_semestre` int NULL DEFAULT NULL COMMENT 'Para turmas de Ensino Técnico ou Superior (colocar apenas o número do semestre)',
+  `turma_obs` text ,
+  PRIMARY KEY (`id_turma`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 ;
+
 
 -- ----------------------------
 -- Table structure for estudantes
@@ -126,35 +160,6 @@ CREATE TABLE `texto`  (
   CONSTRAINT `texto_ibfk_2` FOREIGN KEY (`txt_id_fp`) REFERENCES `ficha_planejamento` (`id_fp`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 ;
 
--- ----------------------------
--- Table structure for turmas
--- ----------------------------
-DROP TABLE IF EXISTS `turmas`;
-CREATE TABLE `turmas`  (
-  `id_turma` int NOT NULL AUTO_INCREMENT,
-  `turma_data_cadastro` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `turma_ano_letivo` int NOT NULL,
-  `turma_ensino` char(1) COMMENT 'F - Fundamental, M - Médio, T - Técnico, S - Superior',
-  `turma_ano` int NULL DEFAULT NULL COMMENT '7º ano, 8º ano. . . (informar apenas o ano)',
-  `turma_semestre` int NULL DEFAULT NULL COMMENT 'Para turmas de Ensino Técnico ou Superior (colocar apenas o número do semestre)',
-  `turma_obs` text ,
-  PRIMARY KEY (`id_turma`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 ;
-
--- ----------------------------
--- Table structure for usuarios
--- ----------------------------
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE `usuarios`  (
-  `id_user` int NOT NULL AUTO_INCREMENT,
-  `user_dtcadastro` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  `user_nome` varchar(255),
-  `user_email` varchar(255),
-  `user_senha` varchar(255),
-  `user_tipo` char(1) COMMENT 'A - Administrador, E - Estudante, P - Professor',
-  PRIMARY KEY (`id_user`) USING BTREE,
-  UNIQUE INDEX `id_user_UNIQUE`(`id_user`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 ;
 
 -- ----------------------------
 -- Table structure for vinculo_tema_prof
@@ -179,7 +184,7 @@ CREATE TRIGGER `usuarios_AFTER_INSERT` AFTER INSERT ON `usuarios` FOR EACH ROW B
 	IF new.user_tipo = "E" THEN 
 		INSERT INTO estudantes(id_estudante, estud_nome) VALUES
 		(new.id_user, new.user_nome) ;
-	ELSE IF new.user_tipo = "P" THEN 
+	ELSEIF new.user_tipo = "P" THEN 
 		INSERT INTO professor(id_prof) VALUES
 		(new.id_user) ;
         END IF;
